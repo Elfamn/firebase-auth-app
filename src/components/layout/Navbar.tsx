@@ -1,3 +1,4 @@
+// components/layout/Navbar.tsx
 import { useRouter } from 'next/router';
 import {
   AppBar,
@@ -7,7 +8,7 @@ import {
   Button,
   IconButton,
 } from '@mui/material';
-import { Person as PersonIcon } from '@mui/icons-material';
+import { Person as PersonIcon, List as ListIcon } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 
 const Navbar = () => {
@@ -32,6 +33,21 @@ const Navbar = () => {
           </Typography>
           {currentUser ? (
             <>
+              <Button 
+                color="inherit" 
+                startIcon={<ListIcon />}
+                onClick={() => router.push('/tasks')}
+                sx={{ mr: 2 }}
+              >
+                Tasks
+              </Button>
+              <Button 
+                color="inherit"
+                onClick={() => router.push('/home')}
+                sx={{ mr: 2 }}
+              >
+                Dashboard
+              </Button>
               <IconButton color="inherit">
                 <PersonIcon />
               </IconButton>

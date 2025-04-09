@@ -11,8 +11,19 @@ import {
     Card,
     CardContent,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { List as ListIcon } from '@mui/icons-material';
 import { useAuth } from '../context/AuthContext';
 import AuthGuard from '../components/layout/AuthGuard';
+
+const GridContainer = styled('div')(({ theme }) => ({
+    display: 'grid',
+    gap: theme.spacing(2),
+    gridTemplateColumns: 'repeat(2, 1fr)',
+    '@media (max-width: 600px)': {
+        gridTemplateColumns: '1fr',
+    },
+}));
 
 export default function Home() {
     const [showSuccess, setShowSuccess] = useState(false);
@@ -49,7 +60,7 @@ export default function Home() {
             <Head>
                 <title>Home | Firebase Auth App</title>
             </Head>
-            <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4 }}>
+            <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4, px: 2 }}>
                 <Paper elevation={3} sx={{ p: 4 }}>
                     <Typography variant="h4" component="h1" gutterBottom>
                         Welcome to Your Dashboard
@@ -61,30 +72,45 @@ export default function Home() {
                     <Card sx={{ mb: 3 }}>
                         <CardContent>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Email:</strong> {currentUser?.email}
+                                <strong>Email:</strong> {currentUser?.email || 'Not available'}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>User ID:</strong> {currentUser?.uid}
+                                <strong>User ID:</strong> {currentUser?.uid || 'Not available'}
                             </Typography>
                             <Typography variant="body1" gutterBottom>
-                                <strong>Email Verified:</strong> {currentUser?.emailVerified ? 'Yes' : 'No'}
+                                <strong>Email Verified:</strong> {
+                                    currentUser?.emailVerified !== undefined 
+                                        ? (currentUser.emailVerified ? 'Yes' : 'No')
+                                        : 'Not available'
+                                }
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                <strong>Account Created:</strong> {currentUser?.metadata.creationTime}
+                                <strong>Account Created:</strong> {currentUser?.metadata.creationTime || 'Not available'}
                             </Typography>
                         </CardContent>
                     </Card>
 
-                    <Box sx={{ mt: 4, textAlign: 'center' }}>
+                    <GridContainer>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            startIcon={<ListIcon />}
+                            onClick={() => router.push('/tasks')}
+                            size="large"
+                        >
+                            Manage Tasks
+                        </Button>
                         <Button
                             variant="contained"
                             color="secondary"
+                            fullWidth
                             onClick={handleLogout}
                             size="large"
                         >
                             Log Out
                         </Button>
-                    </Box>
+                    </GridContainer>
                 </Paper>
             </Box>
             <Notification
